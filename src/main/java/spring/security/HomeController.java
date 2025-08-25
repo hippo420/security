@@ -5,13 +5,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class HomeController {
-    @PostMapping("/prcLogin")
+    @GetMapping("/")
     public String index(@AuthenticationPrincipal UserDetails user, Model model) {
         model.addAttribute("user", user);
+        System.out.println("user: " + user.getUsername());
         return "index";
     }
 
