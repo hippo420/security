@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>공개 페이지</title>
+    <style>
+        * { box-sizing: border-box; }
+        body { margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; background:#f7f7fb; color:#222; }
+        header { padding: 16px 24px; background: #ffffff; border-bottom: 1px solid #eee; display:flex; align-items:center; justify-content:space-between; }
+        .brand { font-weight: 700; }
+        .container { max-width: 960px; margin: 32px auto; background:#fff; border-radius:16px; padding:24px; box-shadow: 0 6px 24px rgba(0,0,0,0.06); }
+        .muted { color:#666; font-size: 0.95rem; }
+        .btn { display:inline-block; padding:10px 14px; border-radius:10px; text-decoration:none; border:1px solid #ddd; }
+        .btn:hover { background:#f3f3f3; }
+        .row { display:flex; gap:12px; align-items:center; flex-wrap:wrap; }
+        footer { text-align:center; color:#888; font-size:0.9rem; padding:24px 0; }
+        code { background:#f0f0f5; padding:2px 6px; border-radius:6px; }
+    </style>
+</head>
+<body>
+<header>
+    <div class="brand">Public</div>
+</header>
+
+<main class="container">
+    <h1>공개 페이지</h1>
+    <section style="margin-top:16px;">
+        <h3>빠른 이동</h3>
+        <div class="row">
+            <a class="btn" href="/">홈</a>
+            <a class="btn" href="/public">공개</a>
+            <a class="btn" href="/admin">관리자 페이지</a>
+            <a class="btn" href="/user">사용자 페이지</a>
+        </div>
+        <p class="muted" style="margin-top:8px;">
+            ※ <code>/admin</code>은 <code>ROLE_ADMIN</code> 필요, <code>/user</code>는 인증 필요.
+        </p>
+    </section>
+</main>
+
+</body>
+</html>
