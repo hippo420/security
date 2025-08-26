@@ -1,7 +1,10 @@
 package spring.security;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,14 +14,22 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class HomeController {
     @GetMapping("/index")
     public String index(@AuthenticationPrincipal UserDetails user, Model model) {
-        if(user == null) {
-            log.error("인증정보 없음");
-            model.addAttribute("username", "undefined");
-        }
-        else{
-            model.addAttribute("user", user);
-            log.info("로그인 성공 - 사용자: [{}], 역할 : [{}]", user.getUsername(),user.getAuthorities());
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
+        if (authentication != null && authentication.isAuthenticated() && !"anonymousUser".equals(authentication.getName())) {
+            model.addAttribute("username", authentication.getName());
+            model.addAttribute("user", true);
+
+            // 역할(Role) 정보 가져오기
+            String roleName = authentication.getAuthorities().iterator().next().getAuthority();
+            model.addAttribute("roleName", roleName);
+
+            // 관리자 여부 확인
+            boolean isAdmin = AuthorityUtils.authorityListToSet(authentication.getAuthorities()).contains("ROLE_ADMIN");
+            model.addAttribute("isAdmin", isAdmin);
+
+        } else {
+            model.addAttribute("user", false);
         }
         return "index";
     }

@@ -1,16 +1,93 @@
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
-    <title>Main</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>메인</title>
+    <style>
+        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+
+        body {
+            font-family: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            margin: 0;
+            background-color: #f7f7f8;
+            color: #333;
+            text-align: center;
+        }
+        .container {
+            padding: 30px;
+            background-color: #fff;
+            border-radius: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            max-width: 350px;
+            width: 90%;
+            box-sizing: border-box;
+        }
+        h2 {
+            font-weight: 700;
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #191919;
+        }
+        .button-wrapper {
+            margin-top: 30px;
+        }
+        a {
+            display: block;
+            text-decoration: none;
+            color: #fff;
+            background-color: #007bff; /* Toss 브랜드 컬러와 유사한 색상 */
+            padding: 15px 20px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            transition: background-color 0.2s, transform 0.2s;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        a:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+        .user-info {
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 15px;
+        }
+        .role-info {
+            font-size: 14px;
+            color: #888;
+            margin-top: 5px;
+        }
+    </style>
 </head>
 <body>
-{{#user}}
-    <h2>안녕하세요, {{username}}님!</h2>
-    <a href="/logout">로그아웃</a>
-{{/user}}
-{{^user}}
-    <h2>로그인하지 않은 사용자입니다.</h2>
-    <a href="/login">로그인</a>
-{{/user}}
+<div class="container">
+    {{#user}}
+        <h2>안녕하세요!</h2>
+        <div class="user-info">
+            {{#isAdmin}}
+                관리자 {{username}}님
+            {{/isAdmin}}
+            {{^isAdmin}}
+                {{username}}님
+            {{/isAdmin}}
+        </div>
+        <div class="role-info">당신의 역할은 **{{roleName}}** 입니다.</div>
+        <div class="button-wrapper">
+            <a href="/logout">로그아웃</a>
+        </div>
+    {{/user}}
+    {{^user}}
+        <h2>로그인이 필요합니다</h2>
+        <div class="button-wrapper">
+            <a href="/login">로그인</a>
+        </div>
+    {{/user}}
+</div>
 </body>
 </html>
