@@ -3,13 +3,18 @@ package spring.security;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
+
 @Slf4j
+//@EnableWebSecurity
 @Configuration
 public class SecurityConfig {
 
@@ -28,14 +33,20 @@ public class SecurityConfig {
         return new InMemoryUserDetailsManager(user, admin);
     }
 
+
     // 보안 필터 체인 설정
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+
+
+
         log.info("Security Filter Chain => {}",http.toString());
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/public" ,"/loginView", "/css/**").permitAll() // 누구나 접근 가능
-                        .anyRequest().authenticated() // 나머지는 인증 필요
+                        .requestMatchers("/public" ,"/loginView", "/css/**","/index").permitAll()
+                        .requestMatchers("/user/**").hasRole("USER")
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
                         .loginPage("/loginView")      // 로그인 페이지 경로
@@ -43,12 +54,8 @@ public class SecurityConfig {
                         .defaultSuccessUrl("/index",true)   // 로그인 성공 시 이동
                         .permitAll()
                 )
-                .logout(logout -> logout
-                        .logoutSuccessUrl("/login?logout")
-                        .permitAll()
-                )
-
                 .csrf(csrf -> csrf.disable());
+
 
         return http.build();
     }

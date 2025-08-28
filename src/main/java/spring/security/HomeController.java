@@ -15,6 +15,7 @@ public class HomeController {
     @GetMapping("/index")
     public String index(@AuthenticationPrincipal UserDetails user, Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        log.info("Authentication: {}", authentication);
 
         if (authentication != null && authentication.isAuthenticated() && !"anonymousUser".equals(authentication.getName())) {
             model.addAttribute("username", authentication.getName());
